@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	graphX           = 256
-	graphY           = 64
+	graphX           = 16
+	graphY           = 16
 	wordLength       = 4
 	linksMin         = 2
 	linksMax         = 5
@@ -107,6 +107,12 @@ func main() {
 
 				otherX := wrapToRange(x+deltaX, graphX)
 				otherY := wrapToRange(y+deltaY, graphY)
+
+				if otherX == 0 && otherY == 0 {
+					// don't link to self
+					nLinks++
+					continue
+				}
 
 				otherNode := grid[otherX][otherY]
 
