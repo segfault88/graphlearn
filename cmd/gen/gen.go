@@ -46,9 +46,20 @@ func getWords() []string {
 	return out
 }
 
-func randomWord(words []string) string {
+func randomWord(words []string, usedWords []string) string {
 	j := int(rand.Int31()) % len(words)
-	return words[j]
+	word := words[j]
+
+	// check that word hasn't already been used
+	for _, used := range usedWords {
+		if word == used {
+			// word already used, try again
+			return randomWord(words, usedWords)
+		}
+	}
+
+	// word not already used
+	return word
 }
 
 func wrapToRange(n int, max int) int {
@@ -74,7 +85,7 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	words := getWords()
-	_ = words
+	usedWords := []string{}
 
 	fmt.Printf("Got %d words for node names\n", len(words))
 
@@ -83,7 +94,10 @@ func main() {
 		grid[x] = make([]graphlearn.GridNode, graphY)
 
 		for y := 0; y < graphY; y++ {
-			grid[x][y].Node.Name = randomWord(words)
+			word := randomWord(words, usedWords)
+			usedWords = append(usedWords, word)
+
+			grid[x][y].Node.Name = word
 			grid[x][y].Edges = []graphlearn.Edge{}
 
 			// set x and y for the grid, shifting them around by a random amount
