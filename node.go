@@ -2,12 +2,18 @@ package graphlearn
 
 // Edge graph edge
 type Edge struct {
-	linksTo string
-	length  float32
+	LinksTo string
+	Length  float32
 }
 
 // Node graph node
 type Node struct {
-	name  string
-	edges []Edge
+	Name  string
+	Edges []Edge
+}
+
+// GridNode grid node, wraps a node with a co-ordinate
+type GridNode struct {
+	Node
+	X, Y float32
 }
