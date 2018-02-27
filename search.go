@@ -1,6 +1,7 @@
 package graphlearn
 
 import (
+	"fmt"
 	"log"
 	"math"
 )
@@ -51,11 +52,17 @@ func SearchForShortestPath(nodes []Node) {
 
 	searchNode(&sc, *sc.start, []string{sc.start.Name}, 0.0)
 
-	log.Printf("End\n")
-	log.Printf("%#v", sc.end.Name)
+	log.Printf("End")
 	pathToEnd := sc.foundPaths[sc.index[sc.end.Name]]
 	log.Printf("Path from start to end, length: %f, path: %#v", pathToEnd.Length, pathToEnd.Path)
-	// log.Printf("Final paths %#v", sc.foundPaths)
+
+	for i, p := range sc.foundPaths {
+		if p.Length == math.MaxFloat32 {
+			log.Printf("Path to %s NOT found :(", sc.nodes[i].Name)
+		} else {
+			log.Printf("Path to %s length: %f, path has %d steps", sc.nodes[i].Name, p.Length, len(p.Path))
+		}
+	}
 }
 
 func searchNode(sc *searchContext, node Node, pathSoFar []string, lengthSoFar float32) {
@@ -69,9 +76,15 @@ func searchNode(sc *searchContext, node Node, pathSoFar []string, lengthSoFar fl
 
 		// check if we've found a path shorter than what's been found already
 		if thisLength < pathTo.Length {
-			log.Printf("Found shorter path to %s, was %f, now %f",
+			wasStr := ""
+			if pathTo.Length == math.MaxFloat32 {
+				wasStr = "Inf"
+			} else {
+				wasStr = fmt.Sprintf("%f", pathTo.Length)
+			}
+			log.Printf("Found shorter path to %s, was %s, now %f",
 				edge.LinksTo,
-				pathTo.Length,
+				wasStr,
 				thisLength,
 			)
 
