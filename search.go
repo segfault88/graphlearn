@@ -23,7 +23,7 @@ func SearchForShortestPath(nodes []Node) {
 		end:        &nodes[len(nodes)-1],
 		index:      map[string]int{},
 		visited:    map[int]bool{},
-		foundPaths: make([]Path, len(nodes)),
+		foundPaths: make([]Path, len(nodes)-1),
 	}
 
 	log.Printf("%d nodes found, going to search from '%s' to '%s', setting up\n",
@@ -57,7 +57,7 @@ func SearchForShortestPath(nodes []Node) {
 
 func searchNode(sc *searchContext, node Node, pathSoFar []string, lengthSoFar float32) {
 	// mark node visited
-	sc.visited[sc.index[sc.start.Name]] = true
+	sc.visited[sc.index[node.Name]] = true
 
 	for _, edge := range node.Edges {
 		thisLength := lengthSoFar + edge.Length
@@ -83,8 +83,11 @@ func searchNode(sc *searchContext, node Node, pathSoFar []string, lengthSoFar fl
 
 		// if this edge has not been visited, visit it!
 		if !sc.visited[linksToIdx] {
+			log.Printf("Links to node %s has not been visited, searching", edge.LinksTo)
 			linksToNode := sc.nodes[linksToIdx]
 			searchNode(sc, linksToNode, append(pathSoFar, linksToNode.Name), lengthSoFar+edge.Length)
+		} else {
+			log.Printf("Links to node %s has already been visited, skipping", edge.LinksTo)
 		}
 	}
 }
