@@ -23,7 +23,7 @@ func SearchForShortestPath(nodes []Node) {
 		end:        &nodes[len(nodes)-1],
 		index:      map[string]int{},
 		visited:    map[int]bool{},
-		foundPaths: make([]Path, len(nodes)-1),
+		foundPaths: make([]Path, len(nodes)),
 	}
 
 	log.Printf("%d nodes found, going to search from '%s' to '%s', setting up\n",
@@ -52,7 +52,10 @@ func SearchForShortestPath(nodes []Node) {
 	searchNode(&sc, *sc.start, []string{sc.start.Name}, 0.0)
 
 	log.Printf("End\n")
-	log.Printf("Final paths %#v", sc.foundPaths)
+	log.Printf("%#v", sc.end.Name)
+	pathToEnd := sc.foundPaths[sc.index[sc.end.Name]]
+	log.Printf("Path from start to end, length: %f, path: %#v", pathToEnd.Length, pathToEnd.Path)
+	// log.Printf("Final paths %#v", sc.foundPaths)
 }
 
 func searchNode(sc *searchContext, node Node, pathSoFar []string, lengthSoFar float32) {
