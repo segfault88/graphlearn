@@ -92,10 +92,6 @@ func searchNode(sc *searchContext, node Node, pathSoFar []string, lengthSoFar fl
 			sc.foundPaths[linksToIdx].Length = thisLength
 			sc.foundPaths[linksToIdx].Path = append(pathSoFar, edge.LinksTo)
 		}
-	}
-
-	for _, edge := range node.Edges {
-		linksToIdx := sc.index[edge.LinksTo]
 
 		// if this edge has not been visited, visit it!
 		if !sc.visited[linksToIdx] {
