@@ -138,6 +138,9 @@ func main() {
 
 				edge := graphlearn.Edge{LinksTo: otherNode.Name, Length: distance}
 				grid[x][y].Edges = append(grid[x][y].Edges, edge)
+				// add the edge in the other direction
+				otherEdge := graphlearn.Edge{LinksTo: thisNode.Name, Length: distance}
+				grid[otherX][otherY].Edges = append(grid[otherX][otherY].Edges, otherEdge)
 			}
 		}
 	}
