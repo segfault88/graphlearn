@@ -17,3 +17,9 @@ type GridNode struct {
 	Node
 	X, Y float32
 }
+
+// Path path found to node
+type Path struct {
+	Length float32
+	Path   []string
+}
